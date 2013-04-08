@@ -270,7 +270,7 @@ secondStateIconName:(NSString *)secondIconName
 
 	if((-kMCStop1 < percentage) && (percentage < kMCStop1))
 	{
-		color = [color colorWithAlphaComponent:0.3f];
+		color = [color colorWithAlphaComponent:0.2f];
 	}
 
     return color;

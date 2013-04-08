@@ -268,7 +268,7 @@ secondStateIconName:(NSString *)secondIconName
     else
         color = [UIColor clearColor];
 
-	if(-kMCStop1 < percentage < kMCStop1)
+	if((-kMCStop1 < percentage) && (percentage < kMCStop1))
 	{
 		color = [color colorWithAlphaComponent:0.3f];
 	}

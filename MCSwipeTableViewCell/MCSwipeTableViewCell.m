@@ -340,17 +340,13 @@ secondStateIconName:(NSString *)secondIconName
     NSString *imageName = [self imageNameWithPercentage:percentage];
 
     // Image Position
-    if (imageName != nil) {
-        [_slidingImageView setImage:[UIImage imageNamed:imageName]];
-        [_slidingImageView setAlpha:[self imageAlphaWithPercentage:percentage]];
-    }
+    [_slidingImageView setImage:[UIImage imageNamed:imageName]];
+    [_slidingImageView setAlpha:[self imageAlphaWithPercentage:percentage]];
     [self slideImageWithPercentage:percentage imageName:imageName isDragging:YES];
 
     // Color
     UIColor *color = [self colorWithPercentage:percentage];
-    if (color != nil) {
-        [_colorIndicatorView setBackgroundColor:color];
-    }
+    [_colorIndicatorView setBackgroundColor:color];
 }
 
 

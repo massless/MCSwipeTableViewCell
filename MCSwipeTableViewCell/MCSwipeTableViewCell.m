@@ -412,14 +412,10 @@ secondStateIconName:(NSString *)secondIconName
 
     // Color
     UIColor *color = [self colorWithPercentage:_currentPercentage];
-    if (color != nil) {
-        [_colorIndicatorView setBackgroundColor:color];
-    }
+    [_colorIndicatorView setBackgroundColor:color];
 
     // Image
-    if (_currentImageName != nil) {
-        [_slidingImageView setImage:[UIImage imageNamed:_currentImageName]];
-    }
+    [_slidingImageView setImage:[UIImage imageNamed:_currentImageName]];
 
     [UIView animateWithDuration:duration
                           delay:0.0

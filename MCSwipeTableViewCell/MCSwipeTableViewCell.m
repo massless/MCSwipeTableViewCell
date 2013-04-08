@@ -229,11 +229,11 @@ secondStateIconName:(NSString *)secondIconName
     NSString *imageName;
 
     // Image
-    if (percentage >= 0 && percentage < kMCStop2)
+    if (percentage >= kMCStop1 && percentage < kMCStop2)
         imageName = _firstIconName;
     else if (percentage >= kMCStop2)
         imageName = _secondIconName;
-    else if (percentage < 0 && percentage > -kMCStop2)
+    else if (percentage < -kMCStop1 && percentage > -kMCStop2)
         imageName = _thirdIconName;
     else if (percentage <= -kMCStop2)
         imageName = _fourthIconName;
@@ -257,11 +257,11 @@ secondStateIconName:(NSString *)secondIconName
     UIColor *color;
 
     // Background Color
-    if (percentage >= kMCStop1 && percentage < kMCStop2)
+    if (percentage >= 0 && percentage < kMCStop2)
         color = _firstColor;
     else if (percentage >= kMCStop2)
         color = _secondColor;
-    else if (percentage < -kMCStop1 && percentage > -kMCStop2)
+    else if (percentage < 0 && percentage > -kMCStop2)
         color = _thirdColor;
     else if (percentage <= -kMCStop2)
         color = _fourthColor;

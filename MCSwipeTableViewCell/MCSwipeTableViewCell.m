@@ -268,6 +268,11 @@ secondStateIconName:(NSString *)secondIconName
     else
         color = [UIColor clearColor];
 
+	if(-kMCStop1 < percentage < kMCStop1)
+	{
+		color = [color colorWithAlphaComponent:0.3f];
+	}
+
     return color;
 }
 
@@ -346,7 +351,13 @@ secondStateIconName:(NSString *)secondIconName
 
     // Color
     UIColor *color = [self colorWithPercentage:percentage];
-    [_colorIndicatorView setBackgroundColor:color];
+	[UIView animateWithDuration:0.2f
+					 animations:^{
+						 [_colorIndicatorView setBackgroundColor:color];
+					 }
+					 completion:^(BOOL finished) {
+						 
+					 }];
 }
 
 

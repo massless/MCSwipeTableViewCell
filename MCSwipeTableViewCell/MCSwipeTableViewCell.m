@@ -466,6 +466,7 @@ secondStateIconName:(NSString *)secondIconName
                                           }
                                           completion:^(BOOL finished2) {
                                               [self notifyDelegate];
+                                              [_colorIndicatorView setBackgroundColor:[UIColor clearColor]];
                                           }];
                      }];
 }

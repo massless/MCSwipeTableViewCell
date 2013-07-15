@@ -140,11 +140,35 @@ secondStateIconName:(NSString *)secondIconName
     _panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGestureRecognizer:)];
     [self addGestureRecognizer:_panGestureRecognizer];
     [_panGestureRecognizer setDelegate:self];
+    
+    _isDragging = NO;
+    
+    // By default the cells are draggable
+    _shouldDrag = YES;
+}
+
+#pragma mark - Prepare reuse
+
+- (void)prepareForReuse {
+    [super prepareForReuse];
+    
+    // Clearing before presenting back the cell to the user
+    [_colorIndicatorView setBackgroundColor:[UIColor clearColor]];
+    
+    // clearing the dragging flag
+    _isDragging = NO;
+
+    // Before reuse we need to reset it's state
+    _shouldDrag = YES;
 }
 
 #pragma mark - Handle Gestures
 
 - (void)handlePanGestureRecognizer:(UIPanGestureRecognizer *)gesture {
+    
+    // The user do not want you to be dragged!
+    if (!_shouldDrag) return;
+    
     UIGestureRecognizerState state = [gesture state];
     CGPoint translation = [gesture translationInView:self];
     CGPoint velocity = [gesture velocityInView:self];
@@ -152,15 +176,17 @@ secondStateIconName:(NSString *)secondIconName
     NSTimeInterval animationDuration = [self animationDurationWithVelocity:velocity];
     _direction = [self directionWithPercentage:percentage];
 
-    if (state == UIGestureRecognizerStateBegan) {
-    }
-    else if (state == UIGestureRecognizerStateBegan || state == UIGestureRecognizerStateChanged) {
+    if (state == UIGestureRecognizerStateBegan || state == UIGestureRecognizerStateChanged) {
+        _isDragging = YES;
+        
         CGPoint center = {self.contentView.center.x + translation.x, self.contentView.center.y};
         [self.contentView setCenter:center];
         [self animateWithOffset:CGRectGetMinX(self.contentView.frame)];
         [gesture setTranslation:CGPointZero inView:self];
     }
     else if (state == UIGestureRecognizerStateEnded || state == UIGestureRecognizerStateCancelled) {
+        _isDragging = NO;
+        
         _currentImageName = [self imageNameWithPercentage:percentage];
         _currentPercentage = percentage;
         MCSwipeTableViewCellState cellState= [self stateWithPercentage:percentage];
@@ -175,12 +201,12 @@ secondStateIconName:(NSString *)secondIconName
 #pragma mark - UIGestureRecognizerDelegate
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
-    if (gestureRecognizer == _panGestureRecognizer) {
-        UIScrollView *superview = (UIScrollView *) self.superview;
-        CGPoint translation = [(UIPanGestureRecognizer *) gestureRecognizer translationInView:superview];
-
-        // Make sure it is scrolling horizontally
-        return ((fabs(translation.x) / fabs(translation.y) > 1) ? YES : NO && (superview.contentOffset.y == 0.0 && superview.contentOffset.x == 0.0));
+    if ([gestureRecognizer class] == [UIPanGestureRecognizer class]) {
+        UIPanGestureRecognizer *g = (UIPanGestureRecognizer *)gestureRecognizer;
+        CGPoint point = [g velocityInView:self];
+        if (fabsf(point.x) > fabsf(point.y) ) {
+            return YES;
+        }
     }
     return NO;
 }
@@ -191,7 +217,7 @@ secondStateIconName:(NSString *)secondIconName
     CGFloat offset = percentage * width;
 
     if (offset < -width) offset = -width;
-    else if (offset > width) offset = 1.0;
+    else if (offset > width) offset = width;
 
     return offset;
 }

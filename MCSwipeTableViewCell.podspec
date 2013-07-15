@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name     = 'MCSwipeTableViewCell'
-  s.version  = '1.0.11'
+  s.version  = '1.0.1'
   s.author   = { 'Ali Karagoz' => 'mail@alikaragoz.net' }
   s.homepage = 'https://github.com/alikaragoz/MCSwipeTableViewCell'
   s.summary  = 'Mailbox app style UITableViewCell.'
